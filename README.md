@@ -31,9 +31,8 @@ Handling university student credentials safely is our highest priority:
 ### 2. 📅 Repetitive Semester Calendar (.ics & Live WebCal)
 - **True Semester Recurrence (RRULE)**: Classes repeat weekly on their scheduled days through the end of the semester (**September 20, 2026 – December 31, 2026**).
 - **Standard Cairo Timezone (RFC 5545 `Africa/Cairo`)**: Includes standard VTIMEZONE daylight-saving definitions so Apple Calendar, Google Calendar, and Microsoft Outlook place every class accurately without time shifts.
-- **Dual Embedded System Alarms**:
-  - 🔔 **First Alarm (-20 Minutes)**: Notice to pack your items and walk across campus.
-  - ⏰ **Second Alarm (-15 Minutes)**: Urgent notification to take your seat in the lecture hall or lab.
+- **Embedded System Alarms**:
+  - ⏰ **Alarm (-15 Minutes)**: Urgent notification to take your seat in the lecture hall or lab.
   - Alarms trigger natively on iOS, Android, macOS, and Windows even when your phone is locked or asleep!
 - **Live Auto-Updating Subscription (WebCal)**:
   Copy the `webcal://` subscription URL into Apple Calendar or Outlook. Any classroom room changes synced to the server update automatically on your phone without needing to re-download the file.
@@ -55,6 +54,7 @@ Handling university student credentials safely is our highest priority:
 
 ### 5. 📱 Multi-Device PWA & Sound Notifications
 - Installable on iPhone, iPad, Android, macOS, and Windows as a standalone Progressive Web App.
+- Android app too that can be access easy.
 - High-fidelity Web Audio API acoustic chime and mobile haptic vibration alerts.
 - Real-time 20-minute web alarms with live on-screen room directions, audio chime, and mobile vibration.
 
@@ -68,6 +68,7 @@ It automatically:
 1. Verifies **Node.js** and **Python** installations.
 2. Automatically downloads and installs any missing dependencies (`requests`, `beautifulsoup4`, `urllib3`).
 3. Launches the local server and automatically opens `http://localhost:3000/` in your default web browser.
+4. Next time you can access it using the NileUniversitySchedule.exe (Do not forget to add shortcut for it in the desktop and the bar for faster access)
 
 ### Manual Setup (macOS / Linux / Windows)
 ```bash
@@ -90,30 +91,9 @@ node server.js
    - Open `http://192.168.1.50:3000` in Safari or Chrome on your phone.
    - Tap **"Add to Home Screen"** to install the PWA!
 
+5. **Android APK app**:
+   - You can download it through this button it download apk file so you can download it in your phone and do not worry everything is secure and on your local nothing is shared.
 ---
-
-## 🛠️ Project Structure
-
-```
-├── data/
-│   ├── config.example.json   # Template configuration file (safe for git)
-│   ├── schedule.json         # Active student schedule & classroom catalog
-│   └── config.json           # Local runtime settings (ignored by git)
-├── public/
-│   ├── index.html            # Single-page interface & accessible modals
-│   ├── app.css               # Modern glassmorphism UI & responsive styling
-│   ├── app.js                # Timetable rendering, countdown & modal logic
-│   ├── sw.js                 # PWA service worker offline caching
-│   ├── manifest.json         # PWA web manifest
-│   ├── icon-192.png          # App icon (192x192)
-│   └── icon-512.png          # App icon (512x512)
-├── sync_portal.py            # Secure Nile PowerCampus scraper & sync engine
-├── server.js                 # Node.js backend, ICS calendar generator & SSE
-├── package.json              # Project scripts & metadata
-├── start.bat                 # 1-Click launcher for Windows
-├── .gitignore                # Protection against leaking secrets or private data
-└── README.md                 # Documentation & user guide
-```
 
 ---
 
