@@ -1,0 +1,18 @@
+{
+  "credentials": {
+    "username": "student.username",
+    "portalUrl": "https://register.nu.edu.eg/PowerCampusSelfService/Registration/Schedule"
+  },
+  "notifications": {
+    "enabled": true,
+    "leadMinutes": [
+      20
+    ],
+    "soundEnabled": true,
+    "vibrateEnabled": true
+  },
+  "server": {
+    "port": 3000,
+    "autoSyncHours": 6
+  }
+}

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NU Schedule | Nile University Smart Timetable & Navigator</title>
+    <meta name="description" content="Visual timetable, live class room navigator, and dual 20m/15m smart alarms for Nile University students.">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0b1120">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" href="/icon-192.png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+    <div class="app-background-glow glow-1"></div>
+    <div class="app-background-glow glow-2"></div>
+
+    <div class="app-container">
+        <!-- Top Navigation & Header -->
+        <header class="app-header">
+            <div class="header-branding">
+                <div class="logo-badge">
+                    <img src="/icon-192.png" alt="Nile University Logo" class="logo-icon-img" style="width: 38px; height: 38px; border-radius: 50%; box-shadow: 0 2px 8px rgba(37,99,235,0.4); margin-right: 8px;">
+                    <div class="logo-text">
+                        <h1>Nile University</h1>
+                        <span class="logo-sub">Smart Timetable & Navigator</span>
+                    </div>
+                </div>
+                <!-- Live Network Status Pill -->
+                <div id="network-status-pill" class="network-status-pill online" title="Network Connection Status">
+                    <span class="status-dot"></span>
+                    <span id="network-status-text">Online</span>
+                </div>
+            </div>
+
+            <div class="header-profile">
+                <div class="profile-card" id="profile-card-btn" title="Click to Switch Student or Sync">
+                    <div class="avatar-circle" id="profile-avatar">NU</div>
+                    <div class="profile-details">
+                        <div class="profile-name-row">
+                            <span class="profile-name" id="profile-username">Student</span>
+                            <span class="badge badge-primary" id="profile-program">Undergraduate</span>
+                        </div>
+                        <div class="profile-meta" id="profile-meta">
+                            <span>Fall 2026</span> • <span id="badge-daily-check" class="badge-tag">⚡ Live 1-Min Check Active</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-time-format-toggle" class="btn btn-secondary" type="button" onclick="toggleTimeFormat()" title="Toggle 12-Hour (AM/PM) / 24-Hour Time Format">
+                        <span class="btn-icon" id="time-format-icon">🕒</span>
+                        <span class="btn-label" id="time-format-label">12-Hour</span>
+                    </button>
+                    <button id="btn-theme-toggle" class="btn btn-secondary btn-theme-toggle" type="button" onclick="toggleTheme()" title="Toggle Light / Dark Theme">
+                        <span class="btn-icon" id="theme-icon">☀️</span>
+                        <span class="btn-label" id="theme-label">Light Mode</span>
+                    </button>
+                    <button id="btn-open-login" class="btn btn-secondary" title="Sign in with your Nile University username & password">
+                        <span class="btn-icon">🔑</span>
+                        <span class="btn-label">Student Login / Sync</span>
+                    </button>
+                    <button id="btn-sync" class="btn btn-secondary" title="Quick Refresh from PowerCampus">
+                        <span class="btn-icon">🔄</span>
+                        <span class="btn-label">Sync Portal</span>
+                    </button>
+                    <button id="btn-academic-calendar" class="btn btn-secondary" title="View Official Nile University Academic Calendar">
+                        <span class="btn-icon">📅</span>
+                        <span class="btn-label">Academic Dates</span>
+                    </button>
+                    <button id="btn-notify-settings" class="btn btn-secondary" title="Notification Settings">
+                        <span class="btn-icon">🔔</span>
+                        <span class="btn-label">Alarms (20m & 15m)</span>
+                    </button>
+                    <button id="btn-calendar-export" class="btn btn-primary" title="Export Repetitive Semester Calendar with Alarms">
+                        <span class="btn-icon">📲</span>
+                        <span class="btn-label">Export Calendar</span>
+                    </button>
+                    <button id="btn-logout" class="btn btn-logout" style="display: none;" title="Log out from this device and delete all personal data">
+                        <span class="btn-icon">🚪</span>
+                        <span class="btn-label">Log Out</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- OFFLINE MODE BANNER (When phone or tablet has no internet) -->
+        <div id="offline-status-banner" class="offline-status-banner" style="display: none;">
+            <div class="offline-banner-left">
+                <span class="offline-icon">📶</span>
+                <div class="offline-text-box">
+                    <strong>Offline Mode: Displaying Saved Timetable</strong>
+                    <div id="offline-banner-desc" class="offline-desc">No internet connection. Your saved courses, classroom locations, and 20m/15m alarms remain 100% active!</div>
+                </div>
+            </div>
+            <div class="offline-banner-actions">
+                <button id="btn-retry-network" class="btn btn-sm btn-ghost">🔄 Retry Sync</button>
+            </div>
+        </div>
+
+        <!-- SCHEDULE CHANGES ALERT BANNER (Detected by 8:00 AM check) -->
+        <div id="schedule-changes-banner" class="schedule-changes-banner" style="display: none;">
+            <div class="changes-banner-left">
+                <span class="banner-icon">⚠️</span>
+                <div class="banner-text-box">
+                    <strong>Nile University Timetable Change Detected!</strong>
+                    <div id="schedule-changes-text" class="changes-desc">One or more of your classes had a room or time change.</div>
+                </div>
+            </div>
+            <div class="changes-banner-actions">
+                <button id="btn-view-changes" class="btn btn-sm btn-primary">Review Changes</button>
+                <button id="btn-dismiss-changes" class="btn btn-sm btn-ghost">Dismiss</button>
+            </div>
+        </div>
+
+        <!-- Live Where to Go Now Hero Banner -->
+        <section id="hero-now-card" class="hero-navigator-card">
+            <div class="hero-left">
+                <div class="hero-status-tag" id="hero-status-tag">
+                    <span class="pulse-indicator"></span>
+                    <span id="hero-status-text">Checking live schedule...</span>
+                </div>
+                <h2 id="hero-class-title" class="hero-title">Loading your next class...</h2>
+                <div class="hero-badges" id="hero-badges">
+                    <span class="badge" id="hero-type-badge">Type</span>
+                    <span class="badge" id="hero-time-badge">Time</span>
+                    <span class="badge" id="hero-instructor-badge">Instructor</span>
+                </div>
+
+                <div class="hero-directions-box">
+                    <div class="direction-step">
+                        <span class="step-num">📍</span>
+                        <div class="step-info">
+                            <div class="step-title" id="hero-room-title">Room & Floor</div>
+                            <div class="step-desc" id="hero-room-desc">Building instructions will appear here</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="countdown-widget">
+                    <div class="countdown-label" id="countdown-label">Time Remaining</div>
+                    <div class="countdown-digits" id="countdown-digits">--:--:--</div>
+                    <div class="countdown-sub" id="countdown-sub">Dual notifications active (20m & 15m)</div>
+                </div>
+                <div class="hero-quick-buttons">
+                    <button id="btn-test-alert" class="btn btn-sm btn-ghost">
+                        <span>🧪 Test Alert Sound</span>
+                    </button>
+                    <button id="btn-open-guide" class="btn btn-sm btn-ghost">
+                        <span>🗺️ Campus Map Guide</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main View Tabs Navigation -->
+        <nav class="view-tabs-container">
+            <div class="view-tabs">
+                <button class="tab-btn active" data-view="weekly">
+                    <span class="tab-icon">📅</span> Weekly Schedule
+                </button>
+                <button class="tab-btn" data-view="agenda">
+                    <span class="tab-icon">📋</span> Day-by-Day Agenda
+                </button>
+                <button class="tab-btn" data-view="courses">
+                    <span class="tab-icon">📚</span> Enrolled Courses (<span id="courses-count-tab">7</span>)
+                </button>
+                <button class="tab-btn" data-view="campus">
+                    <span class="tab-icon">🧭</span> Campus Guide
+                </button>
+            </div>
+
+            <!-- Quick Day Filter Bar (Full-Width Responsive Day Selector) -->
+            <div class="quick-day-toolbar" id="quick-day-toolbar">
+                <div class="day-pills-row">
+                    <button class="day-pill active" data-day="all"><span>All Week</span></button>
+                    <button class="day-pill" data-day="0"><span>Sun</span></button>
+                    <button class="day-pill" data-day="1"><span>Mon</span></button>
+                    <button class="day-pill" data-day="2"><span>Tue</span></button>
+                    <button class="day-pill" data-day="3"><span>Wed</span></button>
+                    <button class="day-pill" data-day="4"><span>Thu</span></button>
+                </div>
+                <div class="view-mode-toggle-group">
+                    <button class="btn btn-sm btn-ghost view-style-btn" id="btn-view-cards" title="Clean Full-Detail Cards for Mobile">
+                        <span>📱 Cards</span>
+                    </button>
+                    <button class="btn btn-sm btn-ghost view-style-btn active" id="btn-view-matrix" title="Full Timetable Matrix Table">
+                        <span>📊 Grid</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- VIEW 1: Weekly Timetable Grid -->
+        <main id="view-weekly" class="view-content active">
+            <div class="weekly-grid-wrapper">
+                <div class="weekly-grid-container" id="timetable-grid">
+                    <!-- Dynamic Timetable will be populated here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- VIEW 2: Day-by-Day Agenda -->
+        <section id="view-agenda" class="view-content">
+            <div class="agenda-container" id="agenda-list">
+                <!-- Day-by-day cards populated dynamically -->
+            </div>
+        </section>
+
+        <!-- VIEW 3: Enrolled Courses List -->
+        <section id="view-courses" class="view-content">
+            <div class="courses-list-grid" id="courses-catalog">
+                <!-- Course cards populated dynamically -->
+            </div>
+        </section>
+
+        <!-- VIEW 4: Campus Map & Room Directory -->
+        <section id="view-campus" class="view-content">
+            <div class="campus-guide-card">
+                <div class="guide-header">
+                    <h3>🏛️ Nile University Campus Navigation Guide</h3>
+                    <p>Quick lookup for classrooms, computer labs, and lecture amphitheaters.</p>
+                </div>
+
+                <div class="buildings-grid">
+                    <!-- Building 1 (UB1) -->
+                    <div class="building-card">
+                        <div class="building-badge badge-blue">UB1</div>
+                        <h4>Academic Building 1</h4>
+                        <ul class="floor-list">
+                            <li>
+                                <span class="floor-tag">BUB1 (Basement)</span>
+                                <span>Computer Labs: Room 025 (CSC111), Room 032 (PHY111 Lab), Room 053 (CSC111 Lab)</span>
+                            </li>
+                            <li>
+                                <span class="floor-tag">GUB1 (Ground Floor)</span>
+                                <span>Lecture Rooms & Tutorial Halls: Room 116 (ECE151 Lec), Room 132 (PHY111 Tut)</span>
+                            </li>
+                            <li>
+                                <span class="floor-tag">FUB1 (1st Floor)</span>
+                                <span>Tutorial Rooms: Room 221 (MTH111 Tut), Room 223 (INT111 Tut)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Building 2 (UB2) -->
+                    <div class="building-card">
+                        <div class="building-badge badge-emerald">UB2</div>
+                        <h4>Academic Building 2</h4>
+                        <ul class="floor-list">
+                            <li>
+                                <span class="floor-tag">GUB2 (Ground Floor)</span>
+                                <span>Hardware & Electronics Labs: Room G17 (ECE151 Lab)</span>
+                            </li>
+                            <li>
+                                <span class="floor-tag">FUB2 (1st Floor)</span>
+                                <span>Lecture Amphitheaters: Room F23, Room F38, Room F45 (ENGL002), Room F46 (PHY111 Lec), Room F47 (INT111 Lec), Room F48 (MTH111 Lec)</span>
+                            </li>
+                            <li>
+                                <span class="floor-tag">SUB2 (2nd Floor)</span>
+                                <span>Auditoriums & Rooms: Room S29 (MEC111 Lec)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-explainer-card">
+                    <h4>Nile University Floor Coding Convention</h4>
+                    <div class="code-chips">
+                        <div class="code-chip"><strong>BUB:</strong> Basement University Building</div>
+                        <div class="code-chip"><strong>GUB:</strong> Ground Floor University Building</div>
+                        <div class="code-chip"><strong>FUB:</strong> First Floor University Building</div>
+                        <div class="code-chip"><strong>SUB:</strong> Second Floor University Building</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-left">
+                <span>Nile University Fall 2026 • Real-Time PowerCampus Sync Active</span>
+            </div>
+            <div class="footer-right">
+                <span id="last-sync-time">Last synced: Just now</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar (phones & tablets only) -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <button class="mobile-nav-item active" data-mobview="home" title="Live Now">
+            <span class="mobile-nav-icon">🎯</span>
+            <span class="mobile-nav-label">Now</span>
+        </button>
+        <button class="mobile-nav-item" data-mobview="weekly" title="Weekly Grid">
+            <span class="mobile-nav-icon">📅</span>
+            <span class="mobile-nav-label">Weekly</span>
+        </button>
+        <button class="mobile-nav-item" data-mobview="agenda" title="Day Agenda">
+            <span class="mobile-nav-icon">📋</span>
+            <span class="mobile-nav-label">Agenda</span>
+        </button>
+        <button class="mobile-nav-item" data-mobview="courses" title="My Courses">
+            <span class="mobile-nav-icon">📚</span>
+            <span class="mobile-nav-label">Courses</span>
+        </button>
+        <button class="mobile-nav-item" data-mobview="campus" title="Campus Map">
+            <span class="mobile-nav-icon">🧭</span>
+            <span class="mobile-nav-label">Campus</span>
+        </button>
+        <button class="mobile-nav-item" data-mobview="theme" title="Toggle Theme" onclick="toggleTheme()">
+            <span class="mobile-nav-icon" id="mobile-theme-icon">☀️</span>
+            <span class="mobile-nav-label">Theme</span>
+        </button>
+    </nav>
+
+    <!-- MODAL 1: Nile University Student Login & Live Sync (Secure) -->
+    <div id="modal-portal-login" class="modal-backdrop">
+        <div class="modal-dialog modal-dialog-wide">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">🔐</span>
+                    <div>
+                        <h3>Nile University Portal Live Sync</h3>
+                        <p>Enter your PowerCampus credentials to retrieve your live semester timetable</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" id="btn-modal-theme-toggle" class="btn btn-secondary btn-sm btn-theme-toggle" title="Toggle Light / Dark Theme" onclick="toggleTheme()">
+                        <span class="btn-icon" id="modal-theme-icon">☀️</span> <span class="btn-label">Light Mode</span>
+                    </button>
+                    <button class="btn-close-modal" id="btn-close-login">&times;</button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Security & Privacy Assurance Callout -->
+                <div class="security-banner">
+                    <div class="sec-badge">🛡️ Bank-Grade Security & Hacker Protection</div>
+                    <ul class="sec-points">
+                        <li><strong>AES-256-GCM Encryption:</strong> Zero plaintext passwords stored. All credentials are protected with military-grade authenticated encryption.</li>
+                        <li><strong>Sign In Once Forever:</strong> Your session stays open permanently on this device. You will never be asked for your username or password again.</li>
+                        <li><strong>Anti-Hacker Hardening:</strong> Anti-brute-force rate limiting, strict path traversal defense, and isolated cryptographic session tokens.</li>
+                    </ul>
+                </div>
+
+                <!-- Tabs: Live Portal vs Manual Import -->
+                <div class="login-tab-selector">
+                    <button class="login-tab-btn active" data-logintab="portal">🌐 Nile PowerCampus Portal</button>
+                    <button class="login-tab-btn" data-logintab="manual">📄 Manual Schedule Import</button>
+                </div>
+
+                <!-- TAB 1: Live Portal Authentication -->
+                <form id="form-portal-login" class="portal-login-form">
+                    <div class="form-group">
+                        <label for="nu-username">Nile University Username <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="nu-username" placeholder="e.g. H.Mohamed****" required autocomplete="username">
+                        </div>
+                        <span class="field-hint">Your official Nile University student account username</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nu-password">Portal Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🔑</span>
+                            <input type="password" id="nu-password" placeholder="Enter your PowerCampus password" required autocomplete="current-password">
+                            <button type="button" id="btn-toggle-pwd" class="btn-input-action" title="Toggle password visibility">👁️</button>
+                        </div>
+                        <span class="field-hint">Sign in once: securely queries your live schedule and enables 8 AM daily checks</span>
+                    </div>
+
+                    <div class="form-options">
+                        <div class="permanent-session-indicator">
+                            <span class="icon">🔒</span>
+                            <span><strong>Permanent Device Session:</strong> Active forever on this device until you click Log Out.</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress / Status Indicators -->
+                    <div id="sync-progress-box" class="sync-progress-container" style="display: none;">
+                        <div class="sync-stage-item active" id="stage-connect">
+                            <span class="stage-spinner">⏳</span>
+                            <span class="stage-text">Connecting to Nile University PowerCampus...</span>
+                        </div>
+                        <div class="sync-stage-item" id="stage-auth">
+                            <span class="stage-bullet">•</span>
+                            <span class="stage-text">Authenticating student credentials...</span>
+                        </div>
+                        <div class="sync-stage-item" id="stage-fetch">
+                            <span class="stage-bullet">•</span>
+                            <span class="stage-text">Fetching registered courses & classroom locations...</span>
+                        </div>
+                        <div class="sync-stage-item" id="stage-build">
+                            <span class="stage-bullet">•</span>
+                            <span class="stage-text">Generating interactive timetable & smart alarms...</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer modal-footer-spaced">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-login">Cancel</button>
+                        <button type="button" class="btn btn-secondary" id="btn-preview-demo" title="Explore timetable immediately with sample data">
+                            <span>👀 Preview Demo</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn-submit-login">
+                            <span class="btn-icon">🔄</span>
+                            <span class="btn-text">Authenticate & Sync</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- TAB 2: Manual Schedule Import -->
+                <div id="form-manual-import" class="manual-import-box" style="display: none;">
+                    <div class="manual-header">
+                        <h4>Paste Schedule JSON or Raw Data</h4>
+                        <p>If you prefer not to enter your password or are accessing from a restricted network, paste your schedule JSON below:</p>
+                    </div>
+                    <textarea id="import-json-text" class="code-textarea" rows="8" placeholder='{"courses": [...]}'></textarea>
+                    <div class="modal-footer modal-footer-spaced">
+                        <button type="button" class="btn btn-secondary" id="btn-load-sample">Load Default Sample</button>
+                        <button type="button" class="btn btn-primary" id="btn-submit-import">Import Schedule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Repetitive Calendar Export & Subscription (.ics) -->
+    <div id="modal-calendar-export" class="modal-backdrop">
+        <div class="modal-dialog modal-dialog-wide">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">📲</span>
+                    <div>
+                        <h3>Repetitive Semester Calendar (.ics) & Live Subscription</h3>
+                        <p>Sync your entire weekly schedule through the end of the semester with automated 20m & 15m alarms</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btn-close-cal-export">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="cal-feature-callout">
+                    <div class="feature-tag">✨ Full Semester Repetition & Smart Alarms</div>
+                    <p>Every class repeats weekly on its assigned days from <strong>September 20, 2026</strong> until <strong>December 31, 2026</strong> with standard <strong>Africa/Cairo (EET/EEST)</strong> time and dual alarms (20 minutes and 15 minutes before class).</p>
+                </div>
+
+                <div class="cal-options-grid">
+                    <!-- Option 1: Direct File Download -->
+                    <div class="cal-card">
+                        <div class="cal-card-icon">📥</div>
+                        <h4>1. Download .ics Calendar File</h4>
+                        <p>Compatible with Apple Calendar (iOS / macOS), Google Calendar, and Microsoft Outlook. Open the file to add all repetitive classes with one tap!</p>
+                        <a href="/api/calendar.ics" download="nu_schedule_fall2026.ics" class="btn btn-primary btn-block">
+                            <span>Download nu_schedule_fall2026.ics</span>
+                        </a>
+                    </div>
+
+                    <!-- Option 2: Live WebCal Subscription -->
+                    <div class="cal-card">
+                        <div class="cal-card-icon">🔄</div>
+                        <h4>2. Live Auto-Syncing Subscription</h4>
+                        <p>Subscribe on your phone or computer so any room changes or rescheduled sessions automatically update without redownloading!</p>
+                        <div class="url-copy-box">
+                            <input type="text" id="webcal-url-input" readonly value="webcal://localhost:3000/api/calendar.ics">
+                            <button id="btn-copy-webcal" class="btn btn-secondary btn-sm" title="Copy Subscription URL">📋 Copy</button>
+                        </div>
+                        <a id="link-direct-webcal" href="webcal://localhost:3000/api/calendar.ics" class="btn btn-secondary btn-block">
+                            <span>Subscribe in Apple / Outlook Calendar</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Academic Calendar Timeline Reference -->
+                <div class="academic-timeline-summary">
+                    <h4>📅 Nile University Academic Year 2026/2027 Key Dates</h4>
+                    <div class="timeline-row">
+                        <div class="timeline-item">
+                            <span class="timeline-date">Sep 20, 2026</span>
+                            <span class="timeline-event">Classes Begin (Fall)</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">Nov 01 - 08</span>
+                            <span class="timeline-event">Midterm Exams</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">Dec 03, 2026</span>
+                            <span class="timeline-event">Withdrawal Deadline ('W')</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">Dec 31, 2026</span>
+                            <span class="timeline-event">Last Day of Classes</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-date">Jan 03 - 17, 2027</span>
+                            <span class="timeline-event">Final Exams</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-close-cal-footer">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Academic Calendar Details -->
+    <div id="modal-academic-calendar-view" class="modal-backdrop">
+        <div class="modal-dialog modal-dialog-wide">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">🏛️</span>
+                    <div>
+                        <h3>Nile University Academic Calendar 2026 / 2027</h3>
+                        <p>Official term schedule, examination dates, registration periods, and holidays</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btn-close-academic-view">&times;</button>
+            </div>
+
+            <div class="modal-body" id="academic-calendar-body">
+                <div class="term-badge-header">
+                    <span class="badge badge-primary">Current Term: Fall 2026</span>
+                    <span>Academic Year: 2026/2027</span>
+                </div>
+
+                <div class="academic-events-table-wrapper">
+                    <table class="academic-events-table">
+                        <thead>
+                            <tr>
+                                <th>Academic Milestone</th>
+                                <th>Date / Period</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academic-events-list">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-close-academic-footer">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3B: Schedule Changes Review Modal -->
+    <div id="modal-changes-review" class="modal-backdrop">
+        <div class="modal-dialog modal-dialog-wide">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">⚠️</span>
+                    <div>
+                        <h3>Timetable Changes Detected</h3>
+                        <p>Changes identified during daily PowerCampus verification</p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Light / Dark Theme">
+                        <span class="theme-icon">☀️</span> <span class="theme-label">Theme</span>
+                    </button>
+                    <button class="btn-close-modal" id="btn-close-changes">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" id="changes-modal-body">
+                <div id="changes-list-container" class="changes-list-container">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-close-changes-footer">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Notification & Alarm Settings -->
+    <div id="modal-settings" class="modal-backdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon">🔔</span>
+                    <div>
+                        <h3>Alarm & Notification Settings</h3>
+                        <p>Configure dual reminders (20m & 15m) for laptop and mobile</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btn-close-settings">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>🕒 Clock Display Format</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label" style="cursor: pointer;">
+                            <input type="checkbox" id="chk-24h-format" onchange="setTimeFormat(this.checked ? '24h' : '12h')">
+                            <span class="custom-checkbox"></span>
+                            <div>
+                                <strong>24-Hour Time Format (e.g. 14:30)</strong>
+                                <p class="helper-text">Switch between 24-Hour (14:30) and 12-Hour AM/PM (2:30 PM)</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>⏰ Automatic Reminder Lead Time</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk-lead-20" checked disabled>
+                            <span class="custom-checkbox"></span>
+                            <div>
+                                <strong>20 Minutes Before Class Only</strong>
+                                <p class="helper-text">Early alarm with classroom directions to comfortably pack and arrive on time</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>🔊 Sound & Alert Effects</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk-sound" checked>
+                            <span class="custom-checkbox"></span>
+                            <div>
+                                <strong>High-Fidelity Audio Chime</strong>
+                                <p class="helper-text">Synthesized pleasant acoustic chime through speakers</p>
+                            </div>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk-vibrate" checked>
+                            <span class="custom-checkbox"></span>
+                            <div>
+                                <strong>Device Vibration</strong>
+                                <p class="helper-text">Haptic alert pattern on mobile devices</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h4>🖥️ Web Screen & Banner Notifications</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk-banner" checked disabled>
+                            <span class="custom-checkbox"></span>
+                            <div>
+                                <strong>On-Screen Class Popup & Room Directions</strong>
+                                <p class="helper-text">Pops up immediate alert with campus building, floor, and navigation directions</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-save-settings" class="btn btn-primary">Save Settings</button>
+                <button id="btn-test-now" class="btn btn-secondary">Send Test Alert Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Class Detail Popup -->
+    <div id="modal-class-detail" class="modal-backdrop">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="modal-icon" id="detail-icon">📖</span>
+                    <div>
+                        <h3 id="detail-course-title">Course Details</h3>
+                        <p id="detail-course-code">Course Code & Section</p>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btn-close-detail">&times;</button>
+            </div>
+            <div class="modal-body" id="detail-body">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- In-App Floating Toast Notification -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

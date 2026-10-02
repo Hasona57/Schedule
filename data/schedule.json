@@ -1,0 +1,309 @@
+{
+  "student": {
+    "username": "H.mohamed2696",
+    "personId": "27957",
+    "program": "Undergraduate Studies",
+    "advisor": "Academic Advisor",
+    "term": "2026/Fall",
+    "termDates": "9/19/2026 - 12/31/2026",
+    "startDate": "9/19/2026",
+    "endDate": "12/31/2026"
+  },
+  "courses": [
+    {
+      "code": "CSC111",
+      "title": "Computer and Information Skills",
+      "credits": 3,
+      "color": "#f59e0b",
+      "sessions": [
+        {
+          "id": "CSC111-LAB-02B",
+          "type": "Lab",
+          "section": "02B",
+          "day": "Thursday",
+          "dayIndex": 4,
+          "startTime": "16:30",
+          "endTime": "18:29",
+          "room": "Room 053",
+          "floor": "BUB1 (Basement)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Mohamed Shady Ahmed",
+          "directions": "Building 1 -> BUB1 -> Room 053"
+        },
+        {
+          "id": "CSC111-TUT-02A",
+          "type": "Tutorial",
+          "section": "02A",
+          "day": "Monday",
+          "dayIndex": 1,
+          "startTime": "16:30",
+          "endTime": "18:29",
+          "room": "Room 101",
+          "floor": "GUB1 (Ground Floor)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Esraa Ali Elkassas",
+          "directions": "Building 1 -> GUB1 -> Room 101"
+        },
+        {
+          "id": "CSC111-LEC-02",
+          "type": "Lecture",
+          "section": "02",
+          "day": "Thursday",
+          "dayIndex": 4,
+          "startTime": "08:30",
+          "endTime": "09:29",
+          "room": "Room 142",
+          "floor": "GUB1 (Ground Floor)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Noha Gamaledin Saad",
+          "directions": "Building 1 -> GUB1 -> Room 142"
+        }
+      ]
+    },
+    {
+      "code": "ECE151",
+      "title": "Introduction to Programming",
+      "credits": 3,
+      "color": "#3b82f6",
+      "sessions": [
+        {
+          "id": "ECE151-LAB-04B",
+          "type": "Lab",
+          "section": "04B",
+          "day": "Sunday",
+          "dayIndex": 0,
+          "startTime": "10:30",
+          "endTime": "12:29",
+          "room": "Room G17",
+          "floor": "GUB2 (Ground Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Hanaa Abdulkareem Mahdi",
+          "directions": "Building 2 -> GUB2 -> Room G17"
+        },
+        {
+          "id": "ECE151-LEC-04",
+          "type": "Lecture",
+          "section": "04",
+          "day": "Tuesday",
+          "dayIndex": 2,
+          "startTime": "12:30",
+          "endTime": "14:29",
+          "room": "Room 116",
+          "floor": "GUB1 (Ground Floor)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Zeinab Hassan",
+          "directions": "Building 1 -> GUB1 -> Room 116"
+        }
+      ]
+    },
+    {
+      "code": "ENGL002",
+      "title": "English I",
+      "credits": 0,
+      "color": "#6366f1",
+      "sessions": [
+        {
+          "id": "ENGL002-LEC-21",
+          "type": "Lecture",
+          "section": "21",
+          "day": "Monday",
+          "dayIndex": 1,
+          "startTime": "12:30",
+          "endTime": "14:29",
+          "room": "Room F38",
+          "floor": "FUB2 (First Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Noha Mohamed Fathi",
+          "directions": "Building 2 -> FUB2 -> Room F38"
+        },
+        {
+          "id": "ENGL002-LEC-21",
+          "type": "Lecture",
+          "section": "21",
+          "day": "Tuesday",
+          "dayIndex": 2,
+          "startTime": "14:30",
+          "endTime": "16:29",
+          "room": "Room F23",
+          "floor": "F",
+          "building": "Building 2 (UB2)",
+          "instructor": "Noha Mohamed Fathi",
+          "directions": "Building 2 -> F -> Room F23"
+        },
+        {
+          "id": "ENGL002-LEC-21",
+          "type": "Lecture",
+          "section": "21",
+          "day": "Wednesday",
+          "dayIndex": 3,
+          "startTime": "12:30",
+          "endTime": "14:29",
+          "room": "Room F45",
+          "floor": "FUB2 (First Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Noha Mohamed Fathi",
+          "directions": "Building 2 -> FUB2 -> Room F45"
+        }
+      ]
+    },
+    {
+      "code": "INT111",
+      "title": "Engineering Disciplines:History&Concepts",
+      "credits": 3,
+      "color": "#10b981",
+      "sessions": [
+        {
+          "id": "INT111-LAB-02B",
+          "type": "Lab",
+          "section": "02B",
+          "day": "Wednesday",
+          "dayIndex": 3,
+          "startTime": "16:30",
+          "endTime": "18:29",
+          "room": "Room 052",
+          "floor": "BUB1 (Basement)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Shahd Salah Elsheikh",
+          "directions": "Building 1 -> BUB1 -> Room 052"
+        },
+        {
+          "id": "INT111-LEC-02",
+          "type": "Lecture",
+          "section": "02",
+          "day": "Sunday",
+          "dayIndex": 0,
+          "startTime": "16:30",
+          "endTime": "18:29",
+          "room": "Room F47",
+          "floor": "FUB2 (First Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Bakinam Tarek Ahmed Essawy",
+          "directions": "Building 2 -> FUB2 -> Room F47"
+        }
+      ]
+    },
+    {
+      "code": "MEC111",
+      "title": "Engineering Mechanics I",
+      "credits": 3,
+      "color": "#06b6d4",
+      "sessions": [
+        {
+          "id": "MEC111-TUT-02A",
+          "type": "Tutorial",
+          "section": "02A",
+          "day": "Wednesday",
+          "dayIndex": 3,
+          "startTime": "08:30",
+          "endTime": "10:29",
+          "room": "Room 216-A",
+          "floor": "FUB1 (First Floor)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Iman Ali Shalabi",
+          "directions": "Building 1 -> FUB1 -> Room 216-A"
+        },
+        {
+          "id": "MEC111-LEC-02",
+          "type": "Lecture",
+          "section": "02",
+          "day": "Tuesday",
+          "dayIndex": 2,
+          "startTime": "10:30",
+          "endTime": "12:29",
+          "room": "Room S29",
+          "floor": "Ground Floor",
+          "building": "Building 2 (UB2)",
+          "instructor": "Hossam Hassan Aboalela",
+          "directions": "Building 2 -> Ground Floor -> Room S29"
+        }
+      ]
+    },
+    {
+      "code": "MTH111",
+      "title": "Analytical Geometry & Calculus I",
+      "credits": 3,
+      "color": "#ec4899",
+      "sessions": [
+        {
+          "id": "MTH111-TUT-02A",
+          "type": "Tutorial",
+          "section": "02A",
+          "day": "Monday",
+          "dayIndex": 1,
+          "startTime": "10:30",
+          "endTime": "12:29",
+          "room": "Room 8",
+          "floor": "BUB1 (Basement)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Engy Adham Abolwafa",
+          "directions": "Building 1 -> BUB1 -> Room 8"
+        },
+        {
+          "id": "MTH111-LEC-02",
+          "type": "Lecture",
+          "section": "02",
+          "day": "Wednesday",
+          "dayIndex": 3,
+          "startTime": "14:30",
+          "endTime": "16:29",
+          "room": "Room F48",
+          "floor": "FUB2 (First Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Mohamed Ibrahim Wafa",
+          "directions": "Building 2 -> FUB2 -> Room F48"
+        }
+      ]
+    },
+    {
+      "code": "PHY111",
+      "title": "Physics I",
+      "credits": 3,
+      "color": "#8b5cf6",
+      "sessions": [
+        {
+          "id": "PHY111-TUT-08B",
+          "type": "Tutorial",
+          "section": "08B",
+          "day": "Sunday",
+          "dayIndex": 0,
+          "startTime": "08:30",
+          "endTime": "10:29",
+          "room": "Room 132",
+          "floor": "GUB1 (Ground Floor)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Unassigned",
+          "directions": "Building 1 -> GUB1 -> Room 132"
+        },
+        {
+          "id": "PHY111-LAB-08A",
+          "type": "Lab",
+          "section": "08A",
+          "day": "Monday",
+          "dayIndex": 1,
+          "startTime": "09:30",
+          "endTime": "10:29",
+          "room": "Room 32",
+          "floor": "BUB1 (Basement)",
+          "building": "Building 1 (UB1)",
+          "instructor": "Unassigned",
+          "directions": "Building 1 -> BUB1 -> Room 32"
+        },
+        {
+          "id": "PHY111-LEC-08",
+          "type": "Lecture",
+          "section": "08",
+          "day": "Thursday",
+          "dayIndex": 4,
+          "startTime": "10:30",
+          "endTime": "12:29",
+          "room": "Room F46",
+          "floor": "FUB2 (First Floor)",
+          "building": "Building 2 (UB2)",
+          "instructor": "Yasser Mohamed Elbatawy",
+          "directions": "Building 2 -> FUB2 -> Room F46"
+        }
+      ]
+    }
+  ],
+  "lastSynced": "2026-10-01T21:40:40.611724"
+}

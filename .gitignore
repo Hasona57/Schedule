@@ -1,0 +1,34 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and sensitive configuration
+.env
+.env.local
+.env.production
+data/config.json
+data/.encryption_key
+data/sessions.json
+data/users/
+data/*.private.json
+
+# Logs
+*.log
+logs/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+Desktop.ini

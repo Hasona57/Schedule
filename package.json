@@ -1,0 +1,20 @@
+{
+  "name": "nu-smart-schedule",
+  "version": "1.0.0",
+  "description": "Nile University Smart Timetable, Live Campus Navigator & Smart Alarms",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "nile-university",
+    "timetable",
+    "powercampus",
+    "icalendar",
+    "pwa"
+  ],
+  "author": "Nile University Students",
+  "license": "MIT",
+  "type": "commonjs"
+}
