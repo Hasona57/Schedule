@@ -63,7 +63,9 @@ Handling university student credentials safely is our highest priority:
 ## 🚀 Quick Start & Installation
 
 ### 1-Click Launch (Windows)
-Simply double-click [`start.bat`](start.bat)!
+download the full repo using this button:
+[![Download Full Repo](https://img.shields.io/badge/Download-Full%20Repo%20(ZIP)-blue?style=for-the-badge&logo=github)](https://github.com/Hasona57/Schedule/archive/refs/heads/main.zip)
+then Simply double-click [`start.bat`](start.bat)!
 It automatically:
 1. Verifies **Node.js** and **Python** installations.
 2. Automatically downloads and installs any missing dependencies (`requests`, `beautifulsoup4`, `urllib3`).
@@ -93,6 +95,7 @@ node server.js
 
 5. **Android APK app**:
    - You can download it through this button it download apk file so you can download it in your phone and do not worry everything is secure and on your local nothing is shared.
+     [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Hasona57/Schedule/raw/main/app-release.apk)
 ---
 
 ---
